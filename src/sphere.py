@@ -31,7 +31,7 @@ class Sphere:
         :param self: Sphere
         :param ray: Ray
         """
-        oc = ray.origin.substract(self.center)
+        oc = ray.origin.subtract(self.center)
         a = ray.direction.dot(ray.direction)
         b = 2 * oc.dot(ray.direction)
         c = oc.dot(oc) - self.radius ** 2

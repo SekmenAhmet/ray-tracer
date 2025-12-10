@@ -41,7 +41,7 @@ class Vector3:
         """
         return (self.x ** 2 + self.y ** 2 + self.z ** 2) ** 0.5
 
-    def substract(self, other):
+    def subtract(self, other):
         """
         :param self: Vector3
         :param other: Vector3
@@ -55,7 +55,7 @@ class Vector3:
     def multiply(self, scalar):
         """
         :param self: Vector3
-        :param other: Vector3
+        :param other: scalar
         """
         return Vector3(
             self.x * scalar,
@@ -75,3 +75,11 @@ class Vector3:
         :param other: Vector3
         """
         return self.x * other.x + self.y * other.y + self.z * other.z
+
+    def scale(self, scalar):
+        """
+        Alias for multiply method
+        :param self: Vector3
+        :param scalar: float
+        """
+        return self.multiply(scalar)
