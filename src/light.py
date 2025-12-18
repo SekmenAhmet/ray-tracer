@@ -1,8 +1,9 @@
 """
-    Module Light
+Module Light
 """
 
 from vector import Vector3
+
 
 class Light:
     """
@@ -33,4 +34,3 @@ class Light:
 
     def __str__(self):
         return f"Light({self.position}, {self.color}, intensity={self.intensity})"
-

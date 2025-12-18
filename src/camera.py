@@ -1,11 +1,12 @@
 """
-    Module Camera
+Module Camera
 """
+
 
 class Camera:
     """
     Class Camera
-    
+
     Attributes
     ----------
     position : Vector3
@@ -16,10 +17,14 @@ class Camera:
         height of the camera
     fov : float
         field of view of the camera
-    
+
     """
+
     def __init__(self, position, width, height, fov):
         self.position = position
         self.width = width
         self.height = height
         self.fov = fov
+
+    def __str__(self):
+        return f"Camera({self.position}, {self.width}, {self.height}, fov={self.fov})"

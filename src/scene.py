@@ -1,8 +1,9 @@
 """
-    Module Scene
+Module Scene
 """
 
 from vector import Vector3
+
 
 class Scene:
     """
@@ -16,10 +17,15 @@ class Scene:
         list of lights
 
     """
+
     def __init__(self):
+        self.camera = None
         self.spheres = []
         self.lights = []
         self.background_color = Vector3(0, 0, 0)
+
+    def set_camera(self, camera):
+        self.camera = camera
 
     def add_sphere(self, sphere):
         """
