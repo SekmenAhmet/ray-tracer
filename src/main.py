@@ -1,5 +1,8 @@
 """
-Module Main
+Point d'entree du ray tracer.
+
+Charge une scene depuis un fichier, lance le rendu et ecrit une image PPM.
+Ce module est concu pour etre execute directement via `python src/main.py`.
 """
 
 from image_writer import save_ppm

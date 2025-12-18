@@ -1,5 +1,5 @@
 """
-Module Scene
+Conteneur de la scene (camera, objets et lumieres).
 """
 
 from vector import Vector3
@@ -7,15 +7,18 @@ from vector import Vector3
 
 class Scene:
     """
-    Class Scene
+    Regroupe les elements de la scene.
 
     Attributes
     ----------
-    spheres : list
-        list of spheres
-    lights : list
-        list of lights
-
+    camera : Camera or None
+        Camera active.
+    spheres : list[Sphere]
+        Liste des spheres.
+    lights : list[Light]
+        Liste des lumieres.
+    background_color : Vector3
+        Couleur de fond.
     """
 
     def __init__(self):
@@ -25,18 +28,34 @@ class Scene:
         self.background_color = Vector3(0, 0, 0)
 
     def set_camera(self, camera):
+        """
+        Definit la camera de la scene.
+
+        Parameters
+        ----------
+        camera : Camera
+            Camera a utiliser.
+        """
         self.camera = camera
 
     def add_sphere(self, sphere):
         """
-        :param self: Scene
-        :param sphere: Sphere
+        Ajoute une sphere a la scene.
+
+        Parameters
+        ----------
+        sphere : Sphere
+            Sphere a ajouter.
         """
         self.spheres.append(sphere)
 
     def add_light(self, light):
         """
-        :param self: Scene
-        :param light: Light
+        Ajoute une lumiere a la scene.
+
+        Parameters
+        ----------
+        light : Light
+            Lumiere a ajouter.
         """
         self.lights.append(light)

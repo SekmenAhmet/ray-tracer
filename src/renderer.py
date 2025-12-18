@@ -1,5 +1,7 @@
 """
-Module Renderer
+Rendu d'une scene 3D simple avec spheres et lumiere ponctuelle.
+
+Le rendu produit une image sous forme de grille de couleurs (Vector3).
 """
 
 import math
@@ -10,13 +12,12 @@ from vector import Vector3
 
 class Renderer:
     """
-    Class Renderer
+    Effectue le rendu d'une scene.
 
     Attributes
     ----------
     scene : Scene
-        scene to render
-
+        Scene a rendre.
     """
 
     def __init__(self, scene):
@@ -24,7 +25,12 @@ class Renderer:
 
     def render(self):
         """
-        Render the scene
+        Rend la scene pixel par pixel.
+
+        Returns
+        -------
+        list[list[Vector3]]
+            Image sous forme de grille de couleurs RGB.
         """
 
         image = []
@@ -45,9 +51,19 @@ class Renderer:
 
     def get_ray_direction(self, x, y):
         """
-        :param self: Renderer
-        :param x: int
-        :param y: int
+        Calcule la direction du rayon pour un pixel.
+
+        Parameters
+        ----------
+        x : int
+            Coordonne x du pixel.
+        y : int
+            Coordonne y du pixel.
+
+        Returns
+        -------
+        Vector3
+            Direction normalisee dans l'espace camera.
         """
         px = (2 * x / self.scene.camera.width) - 1
         py = 1 - (2 * y / self.scene.camera.height)
@@ -57,12 +73,22 @@ class Renderer:
 
     def compute_lighting(self, ray, t, sphere):
         """
-        Compute lighting for intersection point using Phong illumination model
+        Calcule l'eclairage au point d'intersection via le modele de Phong.
 
-        :param ray: Ray - the ray that hit the sphere
-        :param t: float - intersection distance
-        :param sphere: Sphere - the sphere that was hit
-        :return: Vector3 - final color with lighting
+        Parameters
+        ----------
+        ray : Ray
+            Rayon primaire ayant touche la sphere.
+        t : float
+            Distance d'intersection.
+        sphere : Sphere
+            Sphere intersectee.
+
+        Returns
+        -------
+        Vector3
+            Couleur finale avec ombres, composantes ambiante/diffuse/speculaire,
+            et valeurs clampes dans [0, 255].
         """
         # Point d'intersection
         hit_point = ray.origin.add(ray.direction.scale(t))

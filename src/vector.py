@@ -1,20 +1,19 @@
 """
-    Module Vector3
+Vecteur 3D minimal avec operations de base.
 """
 
 class Vector3:
     """
-    Class Vector3
-    
+    Vecteur 3D.
+
     Attributes
     ----------
     x : float
-        x coordinate
+        Coordonnee x.
     y : float
-        y coordinate
+        Coordonnee y.
     z : float
-        z coordinate
-    
+        Coordonnee z.
     """
     def __init__(self, x, y, z):
         self.x = x
@@ -22,12 +21,24 @@ class Vector3:
         self.z = z
 
     def __str__(self):
+        """
+        Retourne une representation lisible du vecteur.
+        """
         return f"({self.x}, {self.y}, {self.z})"
 
     def add(self, other):
-        """        
-        :param self: Vector3
-        :param other: Vector3
+        """
+        Additionne deux vecteurs.
+
+        Parameters
+        ----------
+        other : Vector3
+            Vecteur additionne.
+
+        Returns
+        -------
+        Vector3
+            Somme des deux vecteurs.
         """
         return Vector3(
             self.x + other.x,
@@ -37,14 +48,28 @@ class Vector3:
 
     def length(self):
         """
-        :param: self
+        Retourne la norme euclidienne.
+
+        Returns
+        -------
+        float
+            Longueur du vecteur.
         """
         return (self.x ** 2 + self.y ** 2 + self.z ** 2) ** 0.5
 
     def subtract(self, other):
         """
-        :param self: Vector3
-        :param other: Vector3
+        Soustrait un vecteur a un autre.
+
+        Parameters
+        ----------
+        other : Vector3
+            Vecteur a soustraire.
+
+        Returns
+        -------
+        Vector3
+            Difference des deux vecteurs.
         """
         return Vector3(
             self.x - other.x,
@@ -54,8 +79,17 @@ class Vector3:
 
     def multiply(self, scalar):
         """
-        :param self: Vector3
-        :param other: scalar
+        Multiplie le vecteur par un scalaire.
+
+        Parameters
+        ----------
+        scalar : float
+            Scalaire multiplicatif.
+
+        Returns
+        -------
+        Vector3
+            Vecteur multiplie par le scalaire.
         """
         return Vector3(
             self.x * scalar,
@@ -65,21 +99,47 @@ class Vector3:
 
     def normalize(self):
         """
-        :param self: Vector3
+        Retourne un vecteur unitaire.
+
+        Returns
+        -------
+        Vector3
+            Vecteur normalise (longueur 1).
+
+        Notes
+        -----
+        La longueur doit etre non nulle.
         """
         return self.multiply(1 / self.length())
 
     def dot(self, other):
         """
-        :param self: Vector3
-        :param other: Vector3
+        Calcule le produit scalaire.
+
+        Parameters
+        ----------
+        other : Vector3
+            Autre vecteur.
+
+        Returns
+        -------
+        float
+            Produit scalaire des deux vecteurs.
         """
         return self.x * other.x + self.y * other.y + self.z * other.z
 
     def scale(self, scalar):
         """
-        Alias for multiply method
-        :param self: Vector3
-        :param scalar: float
+        Alias de multiply.
+
+        Parameters
+        ----------
+        scalar : float
+            Scalaire multiplicatif.
+
+        Returns
+        -------
+        Vector3
+            Vecteur multiplie par le scalaire.
         """
         return self.multiply(scalar)

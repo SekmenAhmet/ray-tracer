@@ -1,29 +1,40 @@
 """
-    Module Ray
+Definition d'un rayon.
 """
 
 class Ray:
     """
-    Class Ray
-    
+    Rayon 3D.
+
     Attributes
     ----------
     origin : Vector3
-        origin of the ray
+        Origine du rayon.
     direction : Vector3
-        direction of the ray
-    
+        Direction du rayon.
     """
     def __init__(self, origin, direction):
         self.origin = origin
         self.direction = direction
 
     def __str__(self):
+        """
+        Retourne une representation lisible du rayon.
+        """
         return f"Ray({self.origin}, {self.direction})"
 
     def point_at(self, t):
         """
-        :param self: Ray
-        :param t: float
+        Calcule un point le long du rayon.
+
+        Parameters
+        ----------
+        t : float
+            Distance scalaire le long du rayon.
+
+        Returns
+        -------
+        Vector3
+            Point a la distance t.
         """
         return self.origin.add(self.direction.multiply(t))

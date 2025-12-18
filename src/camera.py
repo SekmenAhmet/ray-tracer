@@ -1,23 +1,22 @@
 """
-Module Camera
+Definition de la camera.
 """
 
 
 class Camera:
     """
-    Class Camera
+    Camera perspective simple.
 
     Attributes
     ----------
     position : Vector3
-        position of the camera
-    width : float
-        width of the camera
-    height : float
-        height of the camera
+        Position de la camera.
+    width : int
+        Largeur de l'image en pixels.
+    height : int
+        Hauteur de l'image en pixels.
     fov : float
-        field of view of the camera
-
+        Champ de vision en degres.
     """
 
     def __init__(self, position, width, height, fov):
@@ -27,4 +26,7 @@ class Camera:
         self.fov = fov
 
     def __str__(self):
+        """
+        Retourne une representation lisible de la camera.
+        """
         return f"Camera({self.position}, {self.width}, {self.height}, fov={self.fov})"

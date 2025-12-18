@@ -1,13 +1,21 @@
 """
-    Module Image Writer
+Ecriture d'image au format PPM ASCII (P3).
 """
 
 def save_ppm(filename, image, width, height):
     """
-    :param filename: str
-    :param image: list
-    :param width: int
-    :param height: int
+    Ecrit une image RGB au format PPM ASCII (P3).
+
+    Parameters
+    ----------
+    filename : str
+        Chemin du fichier de sortie.
+    image : list[list[Vector3]]
+        Image sous forme de grille de couleurs.
+    width : int
+        Largeur de l'image.
+    height : int
+        Hauteur de l'image.
     """
     with open(filename, 'w') as f:
         f.write('P3\n')

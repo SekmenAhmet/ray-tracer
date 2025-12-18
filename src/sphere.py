@@ -1,21 +1,20 @@
 """
-    Module Sphere
+Definition d'une sphere.
 """
 
 class Sphere:
 
     """
-    Class Sphere
-    
+    Sphere.
+
     Attributes
     ----------
     center : Vector3
-        center of the sphere
+        Centre de la sphere.
     radius : float
-        radius of the sphere
-    color : Color
-        color of the sphere
-    
+        Rayon de la sphere.
+    color : Vector3
+        Couleur RGB de la sphere.
     """
 
     def __init__(self, center, radius, color):
@@ -24,12 +23,24 @@ class Sphere:
         self.color = color
 
     def __str__(self):
+        """
+        Retourne une representation lisible de la sphere.
+        """
         return f"Sphere({self.center}, {self.radius}, {self.color})"
 
     def intersect(self, ray):
         """
-        :param self: Sphere
-        :param ray: Ray
+        Calcule l'intersection rayon-sphere.
+
+        Parameters
+        ----------
+        ray : Ray
+            Rayon a tester.
+
+        Returns
+        -------
+        float or None
+            Plus petite distance t positive si intersection, sinon None.
         """
         oc = ray.origin.subtract(self.center)
         a = ray.direction.dot(ray.direction)

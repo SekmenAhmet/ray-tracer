@@ -1,5 +1,5 @@
 """
-Module Light
+Definition d'une lumiere ponctuelle.
 """
 
 from vector import Vector3
@@ -7,30 +7,37 @@ from vector import Vector3
 
 class Light:
     """
-    Class Light
+    Lumiere ponctuelle.
 
     Attributes
     ----------
     position : Vector3
-        position of the light source
+        Position de la source.
     color : Vector3
-        color of the light (RGB values)
+        Couleur RGB.
     intensity : float
-        intensity of the light (brightness factor)
-
+        Intensite (facteur de brillance).
     """
 
     def __init__(self, position, color=Vector3(255, 255, 255), intensity=1.0):
         """
-        Initialize a light source
+        Initialise une source lumineuse.
 
-        :param position: Vector3 - position of the light in 3D space
-        :param color: Vector3 - RGB color of the light (default: white)
-        :param intensity: float - brightness intensity (default: 1.0)
+        Parameters
+        ----------
+        position : Vector3
+            Position de la lumiere.
+        color : Vector3, optional
+            Couleur RGB (defaut: blanc).
+        intensity : float, optional
+            Intensite (defaut: 1.0).
         """
         self.position = position
         self.color = color
         self.intensity = intensity
 
     def __str__(self):
+        """
+        Retourne une representation lisible de la lumiere.
+        """
         return f"Light({self.position}, {self.color}, intensity={self.intensity})"
