@@ -15,6 +15,8 @@ class Scene:
         Camera active.
     spheres : list[Sphere]
         Liste des spheres.
+    planes : list[Plane]
+        Liste des plans.
     lights : list[Light]
         Liste des lumieres.
     background_color : Vector3
@@ -22,9 +24,13 @@ class Scene:
     """
 
     def __init__(self):
+        """
+        Initialise une scene vide.
+        """
         self.camera = None
         self.spheres = []
         self.lights = []
+        self.planes = []
         self.background_color = Vector3(0, 0, 0)
 
     def set_camera(self, camera):
@@ -59,3 +65,14 @@ class Scene:
             Lumiere a ajouter.
         """
         self.lights.append(light)
+
+    def add_plane(self, plane):
+        """
+        Ajoute un plan a la scene.
+
+        Parameters
+        ----------
+        plane : Plane
+            Plan a ajouter.
+        """
+        self.planes.append(plane)

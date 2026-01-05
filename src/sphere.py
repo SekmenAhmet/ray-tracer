@@ -18,6 +18,18 @@ class Sphere:
     """
 
     def __init__(self, center, radius, color):
+        """
+        Initialise une sphere.
+
+        Parameters
+        ----------
+        center : Vector3
+            Centre de la sphere.
+        radius : float
+            Rayon de la sphere.
+        color : Vector3
+            Couleur RGB.
+        """
         self.center = center
         self.radius = radius
         self.color = color

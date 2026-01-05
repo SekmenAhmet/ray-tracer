@@ -16,6 +16,18 @@ class Vector3:
         Coordonnee z.
     """
     def __init__(self, x, y, z):
+        """
+        Initialise un vecteur 3D.
+
+        Parameters
+        ----------
+        x : float
+            Coordonnee x.
+        y : float
+            Coordonnee y.
+        z : float
+            Coordonnee z.
+        """
         self.x = x
         self.y = y
         self.z = z

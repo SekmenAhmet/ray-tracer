@@ -20,6 +20,20 @@ class Camera:
     """
 
     def __init__(self, position, width, height, fov):
+        """
+        Initialise une camera.
+
+        Parameters
+        ----------
+        position : Vector3
+            Position de la camera.
+        width : int
+            Largeur de l'image en pixels.
+        height : int
+            Hauteur de l'image en pixels.
+        fov : float
+            Champ de vision en degres.
+        """
         self.position = position
         self.width = width
         self.height = height

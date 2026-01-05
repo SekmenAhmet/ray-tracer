@@ -4,6 +4,7 @@ Chargement d'une scene depuis un fichier texte.
 
 from camera import Camera
 from light import Light
+from plane import Plane
 from sphere import Sphere
 from vector import Vector3
 
@@ -17,6 +18,16 @@ class SceneLoader:
     """
 
     def __init__(self, filename, scene) -> None:
+        """
+        Initialise un chargeur de scene.
+
+        Parameters
+        ----------
+        filename : str
+            Chemin du fichier de scene.
+        scene : Scene
+            Scene a renseigner.
+        """
         self.filename = filename
         self.scene = scene
 
@@ -26,7 +37,8 @@ class SceneLoader:
 
         Notes
         -----
-        Les lignes attendues commencent par "Camera", "Light" ou "Sphere".
+        Les lignes attendues commencent par "Camera", "Light", "Sphere" ou
+        "Plane".
         Les lignes doivent etre non vides et bien formees, sinon une
         exception peut etre levee. Chaque objet est affiche via print.
         """
@@ -34,11 +46,12 @@ class SceneLoader:
             "Camera": self.parse_camera,
             "Light": self.parse_light,
             "Sphere": self.parse_sphere,
+            "Plane": self.parse_plane,
         }
 
         with open(self.filename, "r", encoding="utf-8") as file:
             for f in file:
-                words = f.strip().split(" ")
+                words = f.split()
 
                 if not words:
                     continue
@@ -90,4 +103,19 @@ class SceneLoader:
 
         obj = Sphere(center, radius, color)
         self.scene.add_sphere(obj)
+        return obj
+
+    def parse_plane(self, words):
+        """
+        Cree et ajoute un plan a partir des tokens.
+
+        Format attendu
+        --------------
+        Plane x y z nx ny nz r g b
+        """
+        point = Vector3(*map(float, words[1:4]))
+        normal = Vector3(*map(float, words[4:7]))
+        color = Vector3(*map(int, words[7:10]))
+        obj = Plane(point, normal, color)
+        self.scene.add_plane(obj)
         return obj

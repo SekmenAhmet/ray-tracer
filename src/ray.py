@@ -14,6 +14,16 @@ class Ray:
         Direction du rayon.
     """
     def __init__(self, origin, direction):
+        """
+        Initialise un rayon.
+
+        Parameters
+        ----------
+        origin : Vector3
+            Origine du rayon.
+        direction : Vector3
+            Direction du rayon.
+        """
         self.origin = origin
         self.direction = direction
 
