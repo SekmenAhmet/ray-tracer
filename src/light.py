@@ -1,5 +1,5 @@
 """
-Definition d'une lumiere ponctuelle.
+Point light definition.
 """
 
 from vector import Vector3
@@ -7,30 +7,30 @@ from vector import Vector3
 
 class Light:
     """
-    Lumiere ponctuelle.
+    Point light.
 
     Attributes
     ----------
     position : Vector3
-        Position de la source.
+        Light position.
     color : Vector3
-        Couleur RGB.
+        RGB color.
     intensity : float
-        Intensite (facteur de brillance).
+        Intensity multiplier.
     """
 
     def __init__(self, position, color=Vector3(255, 255, 255), intensity=1.0):
         """
-        Initialise une source lumineuse.
+        Initialize a light source.
 
         Parameters
         ----------
         position : Vector3
-            Position de la lumiere.
+            Light position.
         color : Vector3, optional
-            Couleur RGB (defaut: blanc).
+            RGB color (default: white).
         intensity : float, optional
-            Intensite (defaut: 1.0).
+            Intensity (default: 1.0).
         """
         self.position = position
         self.color = color
@@ -38,6 +38,6 @@ class Light:
 
     def __str__(self):
         """
-        Retourne une representation lisible de la lumiere.
+        Return a readable representation of the light.
         """
         return f"Light({self.position}, {self.color}, intensity={self.intensity})"

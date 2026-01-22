@@ -1,5 +1,5 @@
 """
-Conteneur de la scene (camera, objets et lumieres).
+Scene container (camera, objects, and lights).
 """
 
 from vector import Vector3
@@ -7,25 +7,25 @@ from vector import Vector3
 
 class Scene:
     """
-    Regroupe les elements de la scene.
+    Group the elements of a scene.
 
     Attributes
     ----------
     camera : Camera or None
-        Camera active.
+        Active camera.
     spheres : list[Sphere]
-        Liste des spheres.
+        List of spheres.
     planes : list[Plane]
-        Liste des plans.
+        List of planes.
     lights : list[Light]
-        Liste des lumieres.
+        List of lights.
     background_color : Vector3
-        Couleur de fond.
+        Background color.
     """
 
     def __init__(self):
         """
-        Initialise une scene vide.
+        Initialize an empty scene.
         """
         self.camera = None
         self.spheres = []
@@ -35,44 +35,53 @@ class Scene:
 
     def set_camera(self, camera):
         """
-        Definit la camera de la scene.
+        Set the scene camera.
 
         Parameters
         ----------
         camera : Camera
-            Camera a utiliser.
+            Camera to use.
         """
         self.camera = camera
 
     def add_sphere(self, sphere):
         """
-        Ajoute une sphere a la scene.
+        Add a sphere to the scene.
 
         Parameters
         ----------
         sphere : Sphere
-            Sphere a ajouter.
+            Sphere to add.
         """
         self.spheres.append(sphere)
 
     def add_light(self, light):
         """
-        Ajoute une lumiere a la scene.
+        Add a light to the scene.
 
         Parameters
         ----------
         light : Light
-            Lumiere a ajouter.
+            Light to add.
         """
         self.lights.append(light)
 
     def add_plane(self, plane):
         """
-        Ajoute un plan a la scene.
+        Add a plane to the scene.
 
         Parameters
         ----------
         plane : Plane
-            Plan a ajouter.
+            Plane to add.
         """
         self.planes.append(plane)
+
+    def clear(self):
+        """
+        Reset the scene (camera and objects).
+        """
+        self.camera = None
+        self.spheres.clear()
+        self.lights.clear()
+        self.planes.clear()

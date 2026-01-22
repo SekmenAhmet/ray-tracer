@@ -1,48 +1,40 @@
 """
-Chargement d'une scene depuis un fichier texte.
+Parse scene description files into renderable data.
 """
 
-from camera import Camera
-from light import Light
-from plane import Plane
-from sphere import Sphere
-from vector import Vector3
+from headers import Header
 
 
 class SceneLoader:
     """
-    Parse un fichier de scene et renseigne un objet Scene.
-
-    Le format attendu est une ligne par element, avec des tokens separes
-    par des espaces simples.
+    Load a scene text file into header, camera, and object descriptions.
     """
-
-    def __init__(self, filename, scene) -> None:
+    def __init__(self, filename) -> None:
         """
-        Initialise un chargeur de scene.
+        Initialize the loader with a scene file path.
 
         Parameters
         ----------
         filename : str
-            Chemin du fichier de scene.
-        scene : Scene
-            Scene a renseigner.
+            Path to the scene file.
         """
         self.filename = filename
-        self.scene = scene
+        self.header = Header()
+        self.header_parsed = False
+        self.camera_desc = None
+        self.objects = []
 
     def parse(self):
         """
-        Parse le fichier et ajoute les objets a la scene.
+        Parse the scene file and return header, camera, and object data.
 
-        Notes
-        -----
-        Les lignes attendues commencent par "Camera", "Light", "Sphere" ou
-        "Plane".
-        Les lignes doivent etre non vides et bien formees, sinon une
-        exception peut etre levee. Chaque objet est affiche via print.
+        Returns
+        -------
+        tuple[Header, dict, list[dict]]
+            Parsed header, camera description, and objects.
         """
         parsers = {
+            "Header": self.parse_header,
             "Camera": self.parse_camera,
             "Light": self.parse_light,
             "Sphere": self.parse_sphere,
@@ -50,72 +42,220 @@ class SceneLoader:
         }
 
         with open(self.filename, "r", encoding="utf-8") as file:
-            for f in file:
-                words = f.split()
-
-                if not words:
+            for lineno, f in enumerate(file, start=1):
+                line = f.strip()
+                if not line or line.startswith("#"):
                     continue
 
-                obj = parsers[words[0]](words)
-                print(obj)
+                words = line.split()
+                key = words[0]
 
-    def parse_camera(self, words):
+                if key != "Header" and not self.header_parsed:
+                    raise ValueError(f"Ligne {lineno}: Le header doit être défini avant les objets")
+
+                if key == "Header" and self.header_parsed:
+                    raise ValueError(f"Ligne {lineno}: Le header ne peut être défini qu'une seule fois")
+
+                if key not in parsers:
+                    raise ValueError(f"Ligne {lineno}: Type inconnu dans la scene: {key}")
+
+                parsers[key](words, lineno)
+
+        self.header.validate()
+        if self.camera_desc is None:
+            raise ValueError("Aucune camera definie dans la scene")
+        return self.header, self.camera_desc, self.objects
+
+    @staticmethod
+    def parse_anim_value(token):
         """
-        Cree et ajoute une camera a partir des tokens.
+        Parse a numeric token, supporting animated ranges like "(a,b)".
 
-        Format attendu
-        --------------
-        Camera x y z width height fov
+        Parameters
+        ----------
+        token : str
+            Token to parse.
+
+        Returns
+        -------
+        float or tuple[float, float]
+            Parsed value or (start, end) range.
         """
-        position = Vector3(*map(float, words[1:4]))
-        w, h = map(int, words[4:6])
-        fov = float(words[6])
-        obj = Camera(position, w, h, fov)
-        self.scene.set_camera(obj)
-        return obj
+        token = token.strip()
+        if "=" in token:
+            token = token.split("=", 1)[1]
+        if token.startswith("(") and token.endswith(")"):
+            a, b = token[1:-1].split(",")
+            return (float(a), float(b))
+        return float(token)
 
-    def parse_light(self, words):
+    def parse_header(self, words, lineno):
         """
-        Cree et ajoute une lumiere a partir des tokens.
+        Parse a Header line and update the header state.
 
-        Format attendu
-        --------------
-        Light x y z r g b intensity
+        Parameters
+        ----------
+        words : list[str]
+            Tokenized line.
+        lineno : int
+            Line number for error reporting.
         """
-        position = Vector3(*map(float, words[1:4]))
-        color = Vector3(*map(int, words[4:7]))
-        intensity = float(words[7])
-        obj = Light(position, color, intensity)
-        self.scene.add_light(obj)
-        return obj
+        if len(words) < 2:
+            raise ValueError(f"Ligne {lineno}: Header incomplet")
 
-    def parse_sphere(self, words):
+        self.header.type = words[1]
+
+        if self.header.type == "video":
+            if len(words) < 3:
+                raise ValueError(f"Ligne {lineno}: FPS manquant pour la vidéo")
+            self.header.fps = int(words[2])
+
+
+        
+        if len(words) >= 4 and words[3].startswith("duration="):
+            try:
+                self.header.duration = float(words[3].split("=")[1])
+            except ValueError:
+                raise ValueError(f"Ligne {lineno}: duration invalide")
+
+        self.header_parsed = True
+
+    def parse_camera(self, words, lineno):
         """
-        Cree et ajoute une sphere a partir des tokens.
+        Parse a Camera line into a camera description dict.
 
-        Format attendu
-        --------------
-        Sphere x y z radius r g b
+        Parameters
+        ----------
+        words : list[str]
+            Tokenized line.
+        lineno : int
+            Line number for error reporting.
         """
-        center = Vector3(*map(float, words[1:4]))
-        radius = float(words[4])
-        color = Vector3(*map(int, words[5:8]))
+        if len(words) != 7:
+            raise ValueError(f"Ligne {lineno}: Camera attend 6 paramètres")
 
-        obj = Sphere(center, radius, color)
-        self.scene.add_sphere(obj)
-        return obj
+        try:
+            x = self.parse_anim_value(words[1])
+            y = self.parse_anim_value(words[2])
+            z = self.parse_anim_value(words[3])
+            w = int(words[4])
+            h = int(words[5])
+            fov = float(words[6])
+        except ValueError:
+            raise ValueError(f"Ligne {lineno}: Paramètres invalides pour Camera")
 
-    def parse_plane(self, words):
+        self.camera_desc = {
+            "type": "Camera",
+            "x": x,
+            "y": y,
+            "z": z,
+            "width": w,
+            "height": h,
+            "fov": fov,
+        }
+
+    def parse_light(self, words, lineno):
         """
-        Cree et ajoute un plan a partir des tokens.
+        Parse a Light line into an object description.
 
-        Format attendu
-        --------------
-        Plane x y z nx ny nz r g b
+        Parameters
+        ----------
+        words : list[str]
+            Tokenized line.
+        lineno : int
+            Line number for error reporting.
         """
-        point = Vector3(*map(float, words[1:4]))
-        normal = Vector3(*map(float, words[4:7]))
-        color = Vector3(*map(int, words[7:10]))
-        obj = Plane(point, normal, color)
-        self.scene.add_plane(obj)
-        return obj
+        if len(words) != 8:
+            raise ValueError(f"Ligne {lineno}: Light attend 7 paramètres")
+
+        try:
+            x = self.parse_anim_value(words[1])
+            y = self.parse_anim_value(words[2])
+            z = self.parse_anim_value(words[3])
+            r = int(words[4])
+            g = int(words[5])
+            b = int(words[6])
+            intensity = self.parse_anim_value(words[7])
+        except ValueError:
+            raise ValueError(f"Ligne {lineno}: Paramètres invalides pour Light")
+
+        self.objects.append({
+            "type": "Light",
+            "x": x,
+            "y": y,
+            "z": z,
+            "color": (r, g, b),
+            "intensity": intensity,
+        })
+
+    def parse_sphere(self, words, lineno):
+        """
+        Parse a Sphere line into an object description.
+
+        Parameters
+        ----------
+        words : list[str]
+            Tokenized line.
+        lineno : int
+            Line number for error reporting.
+        """
+        if len(words) != 8:
+            raise ValueError(f"Ligne {lineno}: Sphere attend 7 paramètres")
+
+        try:
+            x = self.parse_anim_value(words[1])
+            y = self.parse_anim_value(words[2])
+            z = self.parse_anim_value(words[3])
+            radius = self.parse_anim_value(words[4])
+            r = int(words[5])
+            g = int(words[6])
+            b = int(words[7])
+        except ValueError:
+            raise ValueError(f"Ligne {lineno}: Paramètres invalides pour Sphere")
+
+        self.objects.append({
+            "type": "Sphere",
+            "x": x,
+            "y": y,
+            "z": z,
+            "radius": radius,
+            "color": (r, g, b),
+        })
+
+    def parse_plane(self, words, lineno):
+        """
+        Parse a Plane line into an object description.
+
+        Parameters
+        ----------
+        words : list[str]
+            Tokenized line.
+        lineno : int
+            Line number for error reporting.
+        """
+        if len(words) != 10:
+            raise ValueError(f"Ligne {lineno}: Plane attend 9 paramètres")
+
+        try:
+            px = self.parse_anim_value(words[1])
+            py = self.parse_anim_value(words[2])
+            pz = self.parse_anim_value(words[3])
+            nx = self.parse_anim_value(words[4])
+            ny = self.parse_anim_value(words[5])
+            nz = self.parse_anim_value(words[6])
+            r = int(words[7])
+            g = int(words[8])
+            b = int(words[9])
+        except ValueError:
+            raise ValueError(f"Ligne {lineno}: Paramètres invalides pour Plane")
+
+        self.objects.append({
+            "type": "Plane",
+            "px": px,
+            "py": py,
+            "pz": pz,
+            "nx": nx,
+            "ny": ny,
+            "nz": nz,
+            "color": (r, g, b),
+        })

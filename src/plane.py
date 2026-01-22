@@ -1,34 +1,34 @@
 """
-Definition d'un plan.
+Plane definition.
 """
 
 
 class Plane:
     """
-    Plan defini par un point, une normale et une couleur.
+    Plane defined by a point, a normal, and a color.
 
     Attributes
     ----------
     point : Vector3
-        Point de reference sur le plan.
+        Reference point on the plane.
     normal : Vector3
-        Normale du plan.
+        Plane normal.
     color : Vector3
-        Couleur RGB.
+        RGB color.
     """
 
     def __init__(self, point, normal, color) -> None:
         """
-        Initialise un plan.
+        Initialize a plane.
 
         Parameters
         ----------
         point : Vector3
-            Point de reference sur le plan.
+            Reference point on the plane.
         normal : Vector3
-            Normale du plan.
+            Plane normal.
         color : Vector3
-            Couleur RGB.
+            RGB color.
         """
         self.point = point
         self.normal = normal
@@ -36,17 +36,17 @@ class Plane:
 
     def intersect(self, ray):
         """
-        Calcule l'intersection rayon-plan.
+        Compute a ray-plane intersection.
 
         Parameters
         ----------
         ray : Ray
-            Rayon a tester.
+            Ray to test.
 
         Returns
         -------
         float or None
-            Distance t positive si intersection, sinon None.
+            Positive distance t if hit, otherwise None.
         """
         denom = self.normal.dot(ray.direction)
         if abs(denom) < 1e-6:
@@ -56,6 +56,6 @@ class Plane:
 
     def __str__(self):
         """
-        Retourne une representation lisible du sol.
+        Return a readable representation of the plane.
         """
         return f"Plane({self.point}, {self.normal}, {self.color})"

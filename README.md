@@ -1,93 +1,100 @@
 # Ray Tracer (Python)
 
-Mini ray tracer educatif qui charge une scene texte, trace des rayons
-sur des spheres et des plans, puis ecrit une image PPM.
+Small educational ray tracer that loads a text scene, traces rays against
+spheres and planes, and writes either a PPM image or an MP4 video.
 
-## Objectif
+## Goals
 
-Ce projet illustre les bases du rendu par lancer de rayons:
-camera perspective, intersections rayon-sphere et rayon-plan,
-eclairage de type Phong et ombres simples.
+- Perspective camera
+- Ray-sphere and ray-plane intersections
+- Phong lighting with hard shadows
+- 2x2 anti-aliasing
 
-## Prerequis
+## Requirements
 
 - Python 3.8+
+- ffmpeg (only required for video output)
 
-## Installation
+## Run
 
-Aucune dependance externe.
-
-## Lancer le rendu
-
-Depuis la racine du projet:
+From the project root:
 
 ```bash
 python src/main.py
 ```
 
-Le rendu est ecrit dans `output/image.ppm`.
+To render a specific scene:
 
-## Format de scene
+```bash
+python src/main.py scene/scene2.txt
+```
 
-Chaque ligne du fichier de scene decrit un element:
+Outputs are written under `output/`:
+
+- Images: `output/images/<id>/render.ppm`
+- Videos: `output/video/<id>/out.mp4`
+
+The render id is a zero-padded directory name (e.g., `0001`, `0002`).
+
+## Scene format
+
+Each non-empty line defines an element:
 
 ```
+Header image
 Camera x y z width height fov
 Light x y z r g b intensity
 Sphere x y z radius r g b
-Plane x y z nx ny nz r g b
+Plane px py pz nx ny nz r g b
 ```
 
-Exemple:
+For video renders:
 
 ```
-Camera 0 0 0 800 600 90
-Light 5 5 0 255 255 255 1
-Sphere 0 0 -5 1 255 0 0
-Plane 0 -1 0 0 1 0 200 200 200
+Header video <fps> duration=<seconds>
 ```
 
-Scenes disponibles dans `scene/` (ex: `scene/scene1.txt`).
+Numeric values can be animated by using a range: `(start,end)`. The value is
+linearly interpolated over the video duration.
 
-## Notions (resume)
+Example:
 
-- Vecteur 3D: addition, soustraction, normalisation, produit scalaire.
-- Rayon: origine + direction, point calcule par `point_at(t)`.
-- Camera: determine le plan image et le champ de vision (FOV).
-- Intersection rayon-sphere et rayon-plan: resolution d'une equation
-  quadratique pour la sphere et d'un plan pour le sol.
-- Eclairage: composantes ambiante + diffuse (Lambert) + speculaire (Phong),
-  ombres via un rayon de test vers la lumiere.
-- Format PPM: sortie ASCII (P3), valeurs RGB dans [0, 255].
+```
+Header video 30 duration=2.5
+Camera (-1.5,1.5) 1 3.5 960 540 60
+Light 0 8 -6 255 255 255 0.25
+Sphere 0 0 -6 1.2 220 70 70
+```
 
-## Organisation du code
+Scenes are available in `scene/` (e.g., `scene/scene1.txt`).
 
-- `src/main.py` : point d'entree, charge la scene et lance le rendu.
-- `src/renderer.py` : boucle de rendu, rays primaires, eclairage.
-- `src/vector.py` : operations vectorielles 3D.
-- `src/ray.py` : definition d'un rayon.
-- `src/sphere.py` : intersection rayon-sphere.
-- `src/plane.py` : intersection rayon-plan.
-- `src/camera.py` : camera perspective.
-- `src/light.py` : lumiere ponctuelle.
-- `src/scene.py` : conteneur de scene (camera, objets, lumieres).
-- `src/sceneLoader.py` : parsing du fichier de scene.
-- `src/image_writer.py` : ecriture PPM.
-- `src/init_fs.py` : creation des dossiers `output/` et `scene/`.
+## View the result
 
-## Visualiser l'image
-
-Le fichier `output/image.ppm` est un PPM ASCII. Vous pouvez:
-
-- l'ouvrir avec un viewer compatible PPM
-- le convertir en PNG avec ImageMagick:
+PPM output is ASCII (P3). You can open it with a PPM viewer or convert it:
 
 ```bash
-convert output/image.ppm output/image.png
+convert output/images/0001/render.ppm output/images/0001/render.png
 ```
 
-## Limites connues
+## Code layout
 
-- Geometrie limitee aux spheres et plans.
-- Pas de reflexions, textures, ni anti-aliasing.
-- Eclairage simple et ombres dures.
+- `src/main.py` : entry point, loads the scene and dispatches render type
+- `src/renderer.py` : render loop, primary rays, lighting
+- `src/vector.py` : 3D vector operations
+- `src/ray.py` : ray definition
+- `src/sphere.py` : ray-sphere intersection
+- `src/plane.py` : ray-plane intersection
+- `src/camera.py` : perspective camera
+- `src/light.py` : point light
+- `src/scene.py` : scene container (camera, objects, lights)
+- `src/sceneLoader.py` : scene file parsing
+- `src/scene_builder.py` : scene instantiation at time t
+- `src/headers.py` : header parsing and validation
+- `src/image_writer.py` : PPM output and video encoding
+- `src/init_fs.py` : creates `output/` and `scene/` folders
+
+## Known limitations
+
+- Geometry limited to spheres and planes
+- No reflections, textures, or anti-aliasing beyond 2x2
+- Simple lighting and hard shadows

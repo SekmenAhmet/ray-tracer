@@ -1,32 +1,32 @@
 """
-Vecteur 3D minimal avec operations de base.
+Minimal 3D vector with basic operations.
 """
 
 class Vector3:
     """
-    Vecteur 3D.
+    3D vector.
 
     Attributes
     ----------
     x : float
-        Coordonnee x.
+        X coordinate.
     y : float
-        Coordonnee y.
+        Y coordinate.
     z : float
-        Coordonnee z.
+        Z coordinate.
     """
     def __init__(self, x, y, z):
         """
-        Initialise un vecteur 3D.
+        Initialize a 3D vector.
 
         Parameters
         ----------
         x : float
-            Coordonnee x.
+            X coordinate.
         y : float
-            Coordonnee y.
+            Y coordinate.
         z : float
-            Coordonnee z.
+            Z coordinate.
         """
         self.x = x
         self.y = y
@@ -34,23 +34,23 @@ class Vector3:
 
     def __str__(self):
         """
-        Retourne une representation lisible du vecteur.
+        Return a readable representation of the vector.
         """
         return f"({self.x}, {self.y}, {self.z})"
 
     def add(self, other):
         """
-        Additionne deux vecteurs.
+        Add two vectors.
 
         Parameters
         ----------
         other : Vector3
-            Vecteur additionne.
+            Vector to add.
 
         Returns
         -------
         Vector3
-            Somme des deux vecteurs.
+            Sum of the two vectors.
         """
         return Vector3(
             self.x + other.x,
@@ -60,28 +60,28 @@ class Vector3:
 
     def length(self):
         """
-        Retourne la norme euclidienne.
+        Return the Euclidean length.
 
         Returns
         -------
         float
-            Longueur du vecteur.
+            Vector length.
         """
         return (self.x ** 2 + self.y ** 2 + self.z ** 2) ** 0.5
 
     def subtract(self, other):
         """
-        Soustrait un vecteur a un autre.
+        Subtract another vector.
 
         Parameters
         ----------
         other : Vector3
-            Vecteur a soustraire.
+            Vector to subtract.
 
         Returns
         -------
         Vector3
-            Difference des deux vecteurs.
+            Difference between the two vectors.
         """
         return Vector3(
             self.x - other.x,
@@ -91,17 +91,17 @@ class Vector3:
 
     def multiply(self, scalar):
         """
-        Multiplie le vecteur par un scalaire.
+        Multiply the vector by a scalar.
 
         Parameters
         ----------
         scalar : float
-            Scalaire multiplicatif.
+            Multiplicative scalar.
 
         Returns
         -------
         Vector3
-            Vecteur multiplie par le scalaire.
+            Vector scaled by the scalar.
         """
         return Vector3(
             self.x * scalar,
@@ -111,47 +111,47 @@ class Vector3:
 
     def normalize(self):
         """
-        Retourne un vecteur unitaire.
+        Return a unit vector.
 
         Returns
         -------
         Vector3
-            Vecteur normalise (longueur 1).
+            Normalized vector (length 1).
 
         Notes
         -----
-        La longueur doit etre non nulle.
+        The length must be non-zero.
         """
         return self.multiply(1 / self.length())
 
     def dot(self, other):
         """
-        Calcule le produit scalaire.
+        Compute the dot product.
 
         Parameters
         ----------
         other : Vector3
-            Autre vecteur.
+            Other vector.
 
         Returns
         -------
         float
-            Produit scalaire des deux vecteurs.
+            Dot product of the two vectors.
         """
         return self.x * other.x + self.y * other.y + self.z * other.z
 
     def scale(self, scalar):
         """
-        Alias de multiply.
+        Alias for multiply.
 
         Parameters
         ----------
         scalar : float
-            Scalaire multiplicatif.
+            Multiplicative scalar.
 
         Returns
         -------
         Vector3
-            Vecteur multiplie par le scalaire.
+            Vector scaled by the scalar.
         """
         return self.multiply(scalar)

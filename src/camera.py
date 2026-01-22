@@ -1,38 +1,38 @@
 """
-Definition de la camera.
+Camera definition.
 """
 
 
 class Camera:
     """
-    Camera perspective simple.
+    Simple perspective camera.
 
     Attributes
     ----------
     position : Vector3
-        Position de la camera.
+        Camera position.
     width : int
-        Largeur de l'image en pixels.
+        Image width in pixels.
     height : int
-        Hauteur de l'image en pixels.
+        Image height in pixels.
     fov : float
-        Champ de vision en degres.
+        Field of view in degrees.
     """
 
     def __init__(self, position, width, height, fov):
         """
-        Initialise une camera.
+        Initialize a camera.
 
         Parameters
         ----------
         position : Vector3
-            Position de la camera.
+            Camera position.
         width : int
-            Largeur de l'image en pixels.
+            Image width in pixels.
         height : int
-            Hauteur de l'image en pixels.
+            Image height in pixels.
         fov : float
-            Champ de vision en degres.
+            Field of view in degrees.
         """
         self.position = position
         self.width = width
@@ -41,6 +41,6 @@ class Camera:
 
     def __str__(self):
         """
-        Retourne une representation lisible de la camera.
+        Return a readable representation of the camera.
         """
         return f"Camera({self.position}, {self.width}, {self.height}, fov={self.fov})"

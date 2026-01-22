@@ -1,5 +1,5 @@
 """
-Definition d'une sphere.
+Sphere definition.
 """
 
 class Sphere:
@@ -10,25 +10,25 @@ class Sphere:
     Attributes
     ----------
     center : Vector3
-        Centre de la sphere.
+        Sphere center.
     radius : float
-        Rayon de la sphere.
+        Sphere radius.
     color : Vector3
-        Couleur RGB de la sphere.
+        Sphere RGB color.
     """
 
     def __init__(self, center, radius, color):
         """
-        Initialise une sphere.
+        Initialize a sphere.
 
         Parameters
         ----------
         center : Vector3
-            Centre de la sphere.
+            Sphere center.
         radius : float
-            Rayon de la sphere.
+            Sphere radius.
         color : Vector3
-            Couleur RGB.
+            RGB color.
         """
         self.center = center
         self.radius = radius
@@ -36,23 +36,23 @@ class Sphere:
 
     def __str__(self):
         """
-        Retourne une representation lisible de la sphere.
+        Return a readable representation of the sphere.
         """
         return f"Sphere({self.center}, {self.radius}, {self.color})"
 
     def intersect(self, ray):
         """
-        Calcule l'intersection rayon-sphere.
+        Compute a ray-sphere intersection.
 
         Parameters
         ----------
         ray : Ray
-            Rayon a tester.
+            Ray to test.
 
         Returns
         -------
         float or None
-            Plus petite distance t positive si intersection, sinon None.
+            Smallest positive t if hit, otherwise None.
         """
         oc = ray.origin.subtract(self.center)
         a = ray.direction.dot(ray.direction)

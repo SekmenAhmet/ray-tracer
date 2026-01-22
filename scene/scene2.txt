@@ -1,3 +1,5 @@
+Header image
+
 Camera 0 0 0 800 600 90
 Light 5 5 0 255 255 255 1
 Sphere 1 2 -5 1 25 0 0

@@ -1,0 +1,42 @@
+Header image
+
+Camera 0 10 25 960 540 55
+
+# Soleil = source principale (placée devant la sphère)
+Light 0 10 6 255 220 180 1.0
+
+# Halo solaire très discret
+Light 0 10 8 255 200 140 0.15
+
+# Lumière d’ambiance caméra (très faible)
+Light 0 10 80 120 130 150 0.20
+
+# Variation spatiale subtile
+Light -12 18 40 90 110 140 0.10
+
+# Soleil (géométrie)
+Sphere 0 10 0 1.6 255 210 90
+
+# Mercure
+Sphere 3 14 0 0.45 190 180 170
+
+# Vénus
+Sphere -5 15 0 0.65 220 190 140
+
+# Terre
+Sphere 7 12 0 0.70 90 130 255
+
+# Mars
+Sphere 5 9 0 0.55 190 90 70
+
+# Jupiter
+Sphere -8 8 0 1.1 210 180 140
+
+# Saturne
+Sphere -9 12 0 1.0 220 200 160
+
+# Uranus
+Sphere 9 17 0 0.85 170 220 230
+
+# Neptune
+Sphere -6 6 0 0.85 90 140 220

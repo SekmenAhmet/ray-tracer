@@ -1,5 +1,5 @@
 """
-Rendu d'une scene 3D simple avec spheres, plans et anti-aliasing.
+Render a simple 3D scene with spheres, planes, and anti-aliasing.
 """
 
 import math
@@ -9,10 +9,29 @@ from vector import Vector3
 
 
 class Renderer:
+    """
+    Render a Scene to a pixel grid with simple Phong lighting.
+    """
     def __init__(self, scene):
+        """
+        Initialize the renderer with a scene.
+
+        Parameters
+        ----------
+        scene : Scene
+            Scene to render.
+        """
         self.scene = scene
 
     def render(self):
+        """
+        Render the scene into a 2D list of Vector3 colors.
+
+        Returns
+        -------
+        list[list[Vector3]]
+            Rendered image.
+        """
         image = []
 
         # Anti-aliasing 2x2
@@ -43,6 +62,19 @@ class Renderer:
         return image
 
     def trace_ray(self, ray):
+        """
+        Trace a ray and return the computed color.
+
+        Parameters
+        ----------
+        ray : Ray
+            Ray to trace.
+
+        Returns
+        -------
+        Vector3
+            Shaded color or background color if no hit.
+        """
         closest_t = float("inf")
         hit_obj = None
 
@@ -66,6 +98,21 @@ class Renderer:
         return self.scene.background_color
 
     def get_ray_direction(self, x, y):
+        """
+        Compute a primary ray direction for a pixel sample.
+
+        Parameters
+        ----------
+        x : float
+            Sample X position in pixel space.
+        y : float
+            Sample Y position in pixel space.
+
+        Returns
+        -------
+        Vector3
+            Normalized ray direction.
+        """
         w = self.scene.camera.width
         h = self.scene.camera.height
 
@@ -77,6 +124,23 @@ class Renderer:
         return Vector3(px, py, pz).normalize()
 
     def compute_lighting(self, ray, t, obj):
+        """
+        Compute lighting at the intersection point with simple shadows.
+
+        Parameters
+        ----------
+        ray : Ray
+            Ray that hit the object.
+        t : float
+            Distance to the hit point.
+        obj : Sphere or Plane
+            Object that was hit.
+
+        Returns
+        -------
+        Vector3
+            Lit and clamped color.
+        """
         hit_point = ray.origin.add(ray.direction.scale(t))
 
         # Normale
@@ -89,7 +153,9 @@ class Renderer:
         final_color = base_color.scale(0.1)  # ambient
 
         for light in self.scene.lights:
-            light_dir = light.position.subtract(hit_point).normalize()
+            light_vec = light.position.subtract(hit_point)
+            light_distance = light_vec.length()
+            light_dir = light_vec.normalize()
 
             # Shadow ray
             shadow_origin = hit_point.add(normal.scale(0.001))
@@ -99,7 +165,7 @@ class Renderer:
             for other in self.scene.spheres + self.scene.planes:
                 if other != obj:
                     shadow_t = other.intersect(shadow_ray)
-                    if shadow_t and shadow_t > 0:
+                    if shadow_t and 0 < shadow_t < light_distance:
                         in_shadow = True
                         break
 

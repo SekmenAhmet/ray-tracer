@@ -1,50 +1,50 @@
 """
-Definition d'un rayon.
+Ray definition.
 """
 
 class Ray:
     """
-    Rayon 3D.
+    3D ray.
 
     Attributes
     ----------
     origin : Vector3
-        Origine du rayon.
+        Ray origin.
     direction : Vector3
-        Direction du rayon.
+        Ray direction.
     """
     def __init__(self, origin, direction):
         """
-        Initialise un rayon.
+        Initialize a ray.
 
         Parameters
         ----------
         origin : Vector3
-            Origine du rayon.
+            Ray origin.
         direction : Vector3
-            Direction du rayon.
+            Ray direction.
         """
         self.origin = origin
         self.direction = direction
 
     def __str__(self):
         """
-        Retourne une representation lisible du rayon.
+        Return a readable representation of the ray.
         """
         return f"Ray({self.origin}, {self.direction})"
 
     def point_at(self, t):
         """
-        Calcule un point le long du rayon.
+        Compute a point along the ray.
 
         Parameters
         ----------
         t : float
-            Distance scalaire le long du rayon.
+            Scalar distance along the ray.
 
         Returns
         -------
         Vector3
-            Point a la distance t.
+            Point at distance t.
         """
         return self.origin.add(self.direction.multiply(t))
