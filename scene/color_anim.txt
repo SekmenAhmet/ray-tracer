@@ -1,11 +1,10 @@
-Header image
+Header video 10 duration=2
 
-Camera 0 0 0 1280 720 90
+Camera (20,-20) 0 0 1280 720 90
 
 Light 5 5 0 255 255 255 1.0
 
 Plane 0 -1 0 0 1 0 255 255 255
-
-Sphere 0 -5 1 255 0 0 90
+Sphere 0 -5 1 (0,255) (0,50) (0,24) 90
 Sphere 2 0 -6 0.8 0 0 255
 Sphere -2 0 -6 0.8 0 255 0

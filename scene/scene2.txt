@@ -1,7 +1,7 @@
 Header image
 
 Camera 0 0 0 800 600 90
-Light 5 5 0 255 255 255 1
-Sphere 1 2 -5 1 25 0 0
+Light 1 1 1 255 255 255 1
+Sphere 1 2 -5 1 25 0 20
 Sphere 4 8 -6 0.8 0 0 25
 Sphere -6 2 -6 0.8 0 25 0

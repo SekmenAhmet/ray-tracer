@@ -170,19 +170,18 @@ class Renderer:
                         break
 
             if not in_shadow:
-                # Diffuse
-                diffuse = max(0, normal.dot(light_dir))
-                diffuse_color = base_color.scale(diffuse * light.intensity)
+                ndotl = normal.dot(light_dir)
+                if ndotl > 0:
+                    # Diffuse
+                    diffuse_color = base_color.scale(ndotl * light.intensity)
 
-                # Specular (Phong)
-                reflect_dir = light_dir.subtract(
-                    normal.scale(2 * light_dir.dot(normal))
-                )
-                view_dir = ray.direction.scale(-1).normalize()
-                specular = max(0, reflect_dir.dot(view_dir)) ** 32
-                specular_color = light.color.scale(specular * light.intensity * 0.5)
+                    # Specular (Phong)
+                    reflect_dir = normal.scale(2 * ndotl).subtract(light_dir)
+                    view_dir = ray.direction.scale(-1).normalize()
+                    specular = max(0, reflect_dir.dot(view_dir)) ** 32
+                    specular_color = light.color.scale(specular * light.intensity * 0.5)
 
-                final_color = final_color.add(diffuse_color).add(specular_color)
+                    final_color = final_color.add(diffuse_color).add(specular_color)
 
         # Clamp
         final_color.x = min(255, max(0, final_color.x))

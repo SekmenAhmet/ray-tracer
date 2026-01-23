@@ -8,6 +8,16 @@ from sphere import Sphere
 from plane import Plane
 from vector import Vector3
 
+
+def eval_color(c, t):
+    if isinstance(c[0], tuple):
+        return Vector3(
+            c[0][0] + (c[1][0] - c[0][0]) * t,
+            c[0][1] + (c[1][1] - c[0][1]) * t,
+            c[0][2] + (c[1][2] - c[0][2]) * t,
+        )
+    return Vector3(*c)
+
 def eval_anim(v, t):
     """
     Evaluate an animated value at time t.
