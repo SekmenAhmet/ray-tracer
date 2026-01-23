@@ -42,4 +42,3 @@ class Header:
 
         else:
             self.fps = None
-        
